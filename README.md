@@ -22,3 +22,14 @@ curl -X POST http://localhost:3000/products -H "Content-Type: application/json" 
     "stock": 25
 }'
 ```
+
+## Restock product
+POST /products/:id/restock: to increase the stock level of a product.
+
+```
+curl -X POST http://localhost:3000/products/695d692792d05574ecc9aadc/restock \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 10
+  }'
+```

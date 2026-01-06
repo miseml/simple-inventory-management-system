@@ -1,4 +1,4 @@
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 
 export const createProductValidator = [
     body("name")
@@ -16,4 +16,11 @@ export const createProductValidator = [
     body("stock")
         .notEmpty().withMessage("Stock is required")
         .isInt({ min: 0 }).withMessage("Stock must be a non-negative integer"),
+];
+
+export const restockProductValidator = [
+    param("id").isMongoId().withMessage("Invalid product id"),
+    body("amount")
+        .isInt({ gt: 0 })
+        .withMessage("Restock amount must be a positive integer"),
 ];
