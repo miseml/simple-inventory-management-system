@@ -6,10 +6,10 @@ docker run --name some-mongo -d --network=host mongo:latest
 
 # Endpoints
 
-## Add new endpoint
+## Get list of all products
 GET /products: Retrieve a list of all products.
 
-## Add new endpoint
+## Create a new product
 POST /products: Create a new product (fields: name, description, price,
 stock; all required, max length 50).
 
