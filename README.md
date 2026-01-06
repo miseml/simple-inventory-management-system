@@ -1,7 +1,14 @@
 # Database
 MongoDB was used, to run database in docker container run following command:
 ```
-docker run --name some-mongo -d --network=host mongo:latest
+docker run -d \
+  --name some-mongo \
+  --network=host \
+  mongo:latest \
+  mongod --replSet rs0 --bind_ip_all
+
+#To support transactions run:
+mongosh localhost:27017 --eval "rs.initiate()"
 ```
 
 # Endpoints
@@ -43,5 +50,19 @@ curl -X POST http://localhost:3000/products/695d692792d05574ecc9aadc/sell \
   -H "Content-Type: application/json" \
   -d '{
     "amount": 5
+  }'
+```
+
+## Create new order
+POST /orders: Create a new order (fields: customerId, products).
+```
+curl -X POST http://localhost:3000/orders \
+  -H "Content-Type: application/json" \
+  -d '{
+    "customerId": "cust-123",
+    "products": [
+      { "productId": "695d82bd56984cd5237b2be8", "quantity": 2 },
+      { "productId": "695d82bd56984cd5237b2be8", "quantity": 1 }
+    ]
   }'
 ```

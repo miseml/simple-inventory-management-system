@@ -11,10 +11,15 @@ import {ProductRepository} from "./repositories/product.repository.js";
 import {ProductController} from "./controllers/product.controller.js";
 import {createProductRoutes} from "./routes/products.js";
 
+import { OrderModel } from "./models/order.model.js";
+import { OrderRepository } from "./repositories/order.repository.js";
+import { OrderController } from "./controllers/order.controller.js";
+import { createOrderRoutes } from "./routes/orders.js";
+
 dotenv.config();
 const __dirname = path.resolve();
 
-var app = express();
+let app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -33,4 +38,13 @@ app.use(
     "/products",
     createProductRoutes(productController)
 );
+
+const orderRepository = new OrderRepository(OrderModel);
+const orderController = new OrderController(
+    orderRepository,
+    productRepository
+);
+
+app.use("/orders", createOrderRoutes(orderController));
+
 export default app;

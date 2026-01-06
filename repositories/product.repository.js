@@ -19,7 +19,7 @@ export class ProductRepository {
         );
     }
 
-    async decrementStock(productId, amount) {
+    async decrementStock(productId, amount, session) {
         return this.ProductModel.findOneAndUpdate(
             {
                 _id: productId,
@@ -28,7 +28,7 @@ export class ProductRepository {
             {
                 $inc: { stock: -amount },
             },
-            { new: true }
+            { new: true, session }
         );
     }
 }
