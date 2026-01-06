@@ -1,9 +1,13 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+import express from 'express';
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
+import dotenv from "dotenv";
+import { connectDB } from "./db/mongoose.js";
+import indexRouter from './routes/index.js';
 
-var indexRouter = require('./routes/index');
+dotenv.config();
+const __dirname = path.resolve();
 
 var app = express();
 
@@ -13,6 +17,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+await connectDB();
+
 app.use('/', indexRouter);
 
-module.exports = app;
+export default app;

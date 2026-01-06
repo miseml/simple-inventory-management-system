@@ -4,9 +4,11 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('simple-inventory-management-system:server');
-var http = require('http');
+import app from '../app.js';
+import debugPkg from 'debug';
+import http from 'http';
+
+const debug = debugPkg('simple-inventory-management-system:server');
 
 /**
  * Get port from environment and store in Express.
