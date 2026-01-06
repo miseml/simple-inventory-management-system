@@ -18,4 +18,17 @@ export class ProductRepository {
             { new: true }
         );
     }
+
+    async decrementStock(productId, amount) {
+        return this.ProductModel.findOneAndUpdate(
+            {
+                _id: productId,
+                stock: { $gte: amount },
+            },
+            {
+                $inc: { stock: -amount },
+            },
+            { new: true }
+        );
+    }
 }

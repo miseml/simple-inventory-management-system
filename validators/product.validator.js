@@ -24,3 +24,10 @@ export const restockProductValidator = [
         .isInt({ gt: 0 })
         .withMessage("Restock amount must be a positive integer"),
 ];
+
+export const sellProductValidator = [
+    param("id").isMongoId().withMessage("Invalid product id"),
+    body("amount")
+        .isInt({ gt: 0 })
+        .withMessage("Sell amount must be a positive integer"),
+];

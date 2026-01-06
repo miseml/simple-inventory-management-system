@@ -3,6 +3,7 @@ import {validateRequest} from "../middlewares/error.handling.js";
 import express from 'express';
 import {createProductValidator} from "../validators/product.validator.js";
 import {restockProductValidator} from "../validators/product.validator.js";
+import {sellProductValidator} from "../validators/product.validator.js";
 
 export const createProductRoutes = (productController) => {
     const router = express.Router();
@@ -24,6 +25,13 @@ export const createProductRoutes = (productController) => {
         restockProductValidator,
         validateRequest,
         productController.restockProduct
+    );
+
+    router.post(
+        "/:id/sell",
+        sellProductValidator,
+        validateRequest,
+        productController.sellProduct
     );
 
     return router;

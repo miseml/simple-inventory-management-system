@@ -50,4 +50,24 @@ export class ProductController {
             next(err);
         }
     };
+
+    sellProduct = async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const { amount } = req.body;
+
+            const product =
+                await this.productRepository.decrementStock(id, amount);
+
+            if (!product) {
+                return res.status(400).json({
+                    message: "Insufficient stock or product not found",
+                });
+            }
+
+            return res.status(200).json(product);
+        } catch (err) {
+            next(err);
+        }
+    };
 }

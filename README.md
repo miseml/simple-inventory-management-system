@@ -33,3 +33,15 @@ curl -X POST http://localhost:3000/products/695d692792d05574ecc9aadc/restock \
     "amount": 10
   }'
 ```
+
+## Sell products
+POST /products/:id/sell: to decrease the stock level of a product. Ensure
+the stock cannot go below zero.
+
+```
+curl -X POST http://localhost:3000/products/695d692792d05574ecc9aadc/sell \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 5
+  }'
+```
