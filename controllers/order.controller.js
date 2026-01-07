@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import {calculateFinalOrderValue} from "../business-model/discounts.js";
 
 export class OrderController {
     constructor(orderRepository, productRepository) {
@@ -11,7 +12,7 @@ export class OrderController {
         session.startTransaction();
 
         try {
-            const { customerId, products } = req.body;
+            const {customerId, products} = req.body;
 
             for (const item of products) {
                 const updatedProduct =
@@ -27,13 +28,37 @@ export class OrderController {
             }
 
             const order = await this.orderRepository.create(
-                { customerId, products },
+                {customerId, products},
                 session
             );
 
-            await session.commitTransaction();
+            const orderItems = await Promise.all(
+                products.map(async ({productId, quantity}) => {
+                    const product = await this.productRepository.findById(productId);
+                    if (!product) {
+                        throw new Error("PRODUCT_NOT_FOUND");
+                    }
+                    const category = product.description.split(" ")[0] || "OTHER";
 
-            return res.status(201).json(order);
+                    return {
+                        price: product.price,
+                        quantity,
+                        category
+                    };
+                })
+            );
+            const {customerLocation, orderDate} = req.body;
+            const customer = {
+                location: customerLocation,
+            };
+            const total = calculateFinalOrderValue({
+                orderItems,
+                customer,
+                orderDate
+            });
+
+            await session.commitTransaction();
+            return res.status(201).json({order, total});
         } catch (err) {
             await session.abortTransaction();
 

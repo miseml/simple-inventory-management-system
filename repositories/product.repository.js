@@ -11,6 +11,10 @@ export class ProductRepository {
         return this.ProductModel.find().lean();
     }
 
+    async findById(productId) {
+        return this.ProductModel.findById(productId);
+    }
+
     async incrementStock(productId, amount) {
         return this.ProductModel.findByIdAndUpdate(
             productId,
